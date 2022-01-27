@@ -54,5 +54,5 @@ const server = new SMTPServer({
     disabledCommands: ['AUTH']
 });
 
-server.listen(25, "localhost")
+server.listen(25)
 console.log("::: Server Started :::")
