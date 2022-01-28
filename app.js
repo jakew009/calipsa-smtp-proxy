@@ -1,15 +1,17 @@
-const SMTPServer = require("smtp-server").SMTPServer;
+const SMTPServer = require("smtp-server").SMTPServer
 const parser = require("mailparser").simpleParser
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer')
 
 const server = new SMTPServer({
     onRcptTo(address, session, callback) {
         if (!address.address.endsWith('calipsa.io')) {
+            console.log("Invalid sender address so we rejected it. It must end in calipsa.io.")
+            console.log(`The address given was: "${address.address}"`)
             return callback(
                 new Error("Recipient error, goodbye!")
-            );
+            )
         }
-        return callback(); // Accept the address
+        return callback()
     },
     onData(stream, session, callback) {
         parser(stream, {}, (err, parsed) => {
@@ -60,7 +62,7 @@ const server = new SMTPServer({
         })
     },
     disabledCommands: ['AUTH']
-});
+})
 
 server.listen(25)
 console.log("::: Server Started :::")
