@@ -3,6 +3,14 @@ const parser = require("mailparser").simpleParser
 const nodemailer = require('nodemailer');
 
 const server = new SMTPServer({
+    onRcptTo(address, session, callback) {
+        if (!address.address.endsWith('calipsa.io')) {
+            return callback(
+                new Error("Recipient error, goodbye!")
+            );
+        }
+        return callback(); // Accept the address
+    },
     onData(stream, session, callback) {
         parser(stream, {}, (err, parsed) => {
             if (err)
